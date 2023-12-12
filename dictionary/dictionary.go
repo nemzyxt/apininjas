@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ENDPOINT = utils.BaseUrl + "dictionary?word="
+	endpoint = utils.BaseUrl + "dictionary?word="
 )
 
 type DictClient struct {
@@ -28,7 +28,7 @@ func NewClient(apiKey string) DictClient {
 }
 
 func (c *DictClient) CheckWord(word string) (Response, error) {
-	url := ENDPOINT + word
+	url := endpoint + word
 
 	resp, err := utils.MakeRequest(url, c.ApiKey)
 	if err != nil {
