@@ -3,7 +3,6 @@ package dictionary
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 
 	"github.com/nemzyxt/apininjas/utils"
 )
@@ -18,8 +17,8 @@ type DictClient struct {
 
 type Response struct {
 	Definition string
-	Word string
-	Valid bool
+	Word       string
+	Valid      bool
 }
 
 func NewClient(apiKey string) DictClient {
@@ -31,27 +30,14 @@ func NewClient(apiKey string) DictClient {
 func (c *DictClient) CheckWord(word string) (Response, error) {
 	url := ENDPOINT + word
 
-	req, err := http.NewRequest("GET", url, nil)
+	resp, err := utils.MakeRequest(url, c.ApiKey)
 	if err != nil {
-			return Response{}, err
-	}
-
-	req.Header.Set("X-Api-Key", c.ApiKey)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-			return Response{}, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-			return Response{}, fmt.Errorf("api request failed with status: %v", resp.StatusCode)
+		return Response{}, err
 	}
 
 	var response Response
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-			return Response{}, fmt.Errorf("error decoding api response: %v", err)
+		return Response{}, fmt.Errorf("error decoding api response: %v", err)
 	}
 
 	return response, nil
