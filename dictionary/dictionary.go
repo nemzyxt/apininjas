@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	PATH = "dictionary?word="
+	ENDPOINT = utils.BaseUrl + "dictionary?word="
 )
 
 type DictClient struct {
@@ -29,7 +29,7 @@ func NewClient(apiKey string) DictClient {
 }
 
 func (c *DictClient) CheckWord(word string) (Response, error) {
-	url := utils.BaseUrl + PATH + word
+	url := ENDPOINT + word
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
