@@ -25,6 +25,14 @@ func NewClient(apiKey string) FactsClient {
 	}
 }
 
+func (c *FactsClient) GetFact() (Fact, error) {
+	facts, err := c.GetFacts(1)
+	if err != nil {
+		return Fact{}, err
+	}
+	return facts[0], nil
+}
+
 func (c *FactsClient) GetFacts(limit int) ([]Fact, error) {
 	url := endpoint + fmt.Sprint(limit)
 

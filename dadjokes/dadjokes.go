@@ -25,6 +25,14 @@ func NewClient(apiKey string) JokesClient {
 	}
 }
 
+func (c *JokesClient) GetJoke() (Joke, error) {
+	jokes, err := c.GetJokes(1)
+	if err != nil {
+		return Joke{}, err
+	}
+	return jokes[0], nil
+}
+
 func (c *JokesClient) GetJokes(limit int) ([]Joke, error) {
 	url := endpoint + fmt.Sprint(limit)
 
