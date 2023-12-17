@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/nemzyxt/apininjas/utils"
+	"net/url"
 )
 
 const (
@@ -17,7 +18,7 @@ type ProfanityFilterClient struct {
 type Response struct {
 	Original     string
 	Censored     string
-	HasProfanity string `json:"has_profanity"`
+	HasProfanity bool `json:"has_profanity"`
 }
 
 func NewClient(apiKey string) ProfanityFilterClient {
@@ -27,7 +28,7 @@ func NewClient(apiKey string) ProfanityFilterClient {
 }
 
 func (c *ProfanityFilterClient) RunFilter(text string) (Response, error) {
-	url := endpoint + fmt.Sprint(text)
+	url := endpoint + url.QueryEscape(text)
 
 	resp, err := utils.MakeRequest(url, c.ApiKey)
 	if err != nil {
