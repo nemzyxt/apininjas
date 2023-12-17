@@ -36,7 +36,7 @@ func (c *JokesClient) GetJoke() (Joke, error) {
 func (c *JokesClient) GetJokes(limit int) ([]Joke, error) {
 	url := endpoint + fmt.Sprint(limit)
 
-	resp, err := utils.MakeRequest(url, c.ApiKey)
+	resp, err := utils.MakeRequest("GET", url, c.ApiKey, nil)
 	if err != nil {
 		return nil, err
 	}

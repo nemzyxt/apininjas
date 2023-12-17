@@ -3,6 +3,7 @@ package rhyme
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/nemzyxt/apininjas/utils"
 )
 
@@ -23,7 +24,7 @@ func NewClient(apiKey string) RhymeClient {
 func (c *RhymeClient) GetRhymingWords(word string) ([]string, error) {
 	url := endpoint + fmt.Sprint(word)
 
-	resp, err := utils.MakeRequest(url, c.ApiKey)
+	resp, err := utils.MakeRequest("GET", url, c.ApiKey, nil)
 	if err != nil {
 		return []string{}, err
 	}

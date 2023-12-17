@@ -36,7 +36,7 @@ func (c *FactsClient) GetFact() (Fact, error) {
 func (c *FactsClient) GetFacts(limit int) ([]Fact, error) {
 	url := endpoint + fmt.Sprint(limit)
 
-	resp, err := utils.MakeRequest(url, c.ApiKey)
+	resp, err := utils.MakeRequest("GET", url, c.ApiKey, nil)
 	if err != nil {
 		return nil, err
 	}

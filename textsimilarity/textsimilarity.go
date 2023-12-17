@@ -41,7 +41,7 @@ func (c *TextSimilarityClient) ComputeSimilarity(text1, text2 string) (Response,
 		return Response{}, err
 	}
 
-	resp, err := utils.MakeRequest(url, c.ApiKey, body)
+	resp, err := utils.MakeRequest("POST", url, c.ApiKey, body)
 	if err != nil {
 		return Response{}, err
 	}

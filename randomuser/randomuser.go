@@ -3,6 +3,7 @@ package randomuser
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/nemzyxt/apininjas/utils"
 )
 
@@ -32,7 +33,7 @@ func NewClient(apiKey string) RandomUserClient {
 func (c *RandomUserClient) GetRandomUser() (Response, error) {
 	url := endpoint
 
-	resp, err := utils.MakeRequest(url, c.ApiKey)
+	resp, err := utils.MakeRequest("GET", url, c.ApiKey, nil)
 	if err != nil {
 		return Response{}, err
 	}

@@ -30,7 +30,7 @@ func NewClient(apiKey string) DictClient {
 func (c *DictClient) CheckWord(word string) (Response, error) {
 	url := endpoint + word
 
-	resp, err := utils.MakeRequest(url, c.ApiKey)
+	resp, err := utils.MakeRequest("GET", url, c.ApiKey, nil)
 	if err != nil {
 		return Response{}, err
 	}

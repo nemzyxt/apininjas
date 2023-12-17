@@ -3,8 +3,9 @@ package textlanguage
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nemzyxt/apininjas/utils"
 	"net/url"
+
+	"github.com/nemzyxt/apininjas/utils"
 )
 
 const (
@@ -29,7 +30,7 @@ func NewClient(apiKey string) TextLanguageClient {
 func (c *TextLanguageClient) IdentifyLanguage(text string) (Response, error) {
 	url := endpoint + url.QueryEscape(text)
 
-	resp, err := utils.MakeRequest(url, c.ApiKey)
+	resp, err := utils.MakeRequest("GET", url, c.ApiKey, nil)
 	if err != nil {
 		return Response{}, err
 	}

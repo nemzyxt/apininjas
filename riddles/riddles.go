@@ -3,6 +3,7 @@ package riddles
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/nemzyxt/apininjas/utils"
 )
 
@@ -37,7 +38,7 @@ func (c *RiddlesClient) GetRiddle() (Riddle, error) {
 func (c *RiddlesClient) GetRiddles(limit int) ([]Riddle, error) {
 	url := endpoint + fmt.Sprint(limit)
 
-	resp, err := utils.MakeRequest(url, c.ApiKey)
+	resp, err := utils.MakeRequest("GET", url, c.ApiKey, nil)
 	if err != nil {
 		return []Riddle{}, err
 	}

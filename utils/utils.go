@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -19,13 +21,19 @@ func Init(apiKey string) Client {
 	}
 }
 
-func MakeRequest(url string, apiKey string) (http.Response, error) {
-	req, err := http.NewRequest("GET", url, nil)
+func MakeRequest(method string, url string, apiKey string, body []byte) (http.Response, error) {
+	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		return http.Response{}, err
 	}
 
 	req.Header.Set("X-Api-Key", apiKey)
+
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+		req.Body = io.NopCloser(bytes.NewBuffer(body))
+		req.ContentLength = int64(len(body))
+	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
