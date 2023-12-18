@@ -1,6 +1,7 @@
 .vscode/
 
 whois/
+imagetotext/
 
 main.go
 plan
