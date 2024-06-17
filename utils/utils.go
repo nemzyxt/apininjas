@@ -2,9 +2,11 @@ package utils
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 const (
@@ -46,4 +48,35 @@ func MakeRequest(method string, url string, apiKey string, body []byte) (http.Re
 	}
 
 	return *resp, nil
+}
+
+func MakeQueryString(query interface{}) (string, error) {
+	jsonData, err := json.Marshal(query)
+	if err != nil {
+		return "", err
+	}
+	var data map[string]interface{}
+	if err := json.Unmarshal(jsonData, &data); err != nil {
+		return "", err
+	}
+
+	values := url.Values{}
+
+	// Convert the map to query parameters
+	for key, value := range data {
+		switch v := value.(type) {
+		case string:
+			values.Set(key, v)
+		case int, int8, int16, int32, int64, float32, float64:
+			values.Set(key, fmt.Sprintf("%v", v))
+		case bool:
+			values.Set(key, fmt.Sprintf("%t", v))
+		default:
+			// For complex types, we might need additional handling
+			return "", fmt.Errorf("unsupported type for key %s", key)
+		}
+	}
+
+	// Encode the values into a query string
+	return values.Encode(), nil
 }
