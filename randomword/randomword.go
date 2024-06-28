@@ -16,7 +16,7 @@ type RandomWordClient struct {
 }
 
 type Response struct {
-	Word string `json:"word"`
+	Word []string `json:"word"`
 }
 
 type RandomWordProps struct {
@@ -30,21 +30,21 @@ func NewClient(apiKey string) RandomWordClient {
 	}
 }
 
-func (c *RandomWordClient) GetRandomWord(query RandomWordProps) ([]Response, error) {
+func (c *RandomWordClient) GetRandomWord(query RandomWordProps) (Response, error) {
 	queryString, err := utils.MakeQueryString(query)
 	if err != nil {
-		return []Response{}, err
+		return Response{}, err
 	}
 	url := endpoint + "?" + queryString
 
 	resp, err := utils.MakeRequest("GET", url, c.ApiKey, nil)
 	if err != nil {
-		return []Response{}, err
+		return Response{}, err
 	}
 
-	var response []Response
+	var response Response
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		return []Response{}, fmt.Errorf("error decoding api response: %v", err)
+		return Response{}, fmt.Errorf("error decoding api response: %v", err)
 	}
 	resp.Body.Close()
 	return response, nil
