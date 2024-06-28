@@ -19,11 +19,11 @@ type Response struct {
 	Text string `json:"text"`
 }
 
-type Params struct {
+type LoremIpsumProps struct {
 	MaxLength           string `json:"max_length"`
-	Paragraphs          string `json:"paragraphs"`
-	StartWithLoremIpsum bool   `json:"start_with_lorem_ipsum"`
-	Random              bool   `json:"random"`
+	Paragraphs          string `json:"paragraphs" default:"1"`
+	StartWithLoremIpsum bool   `json:"start_with_lorem_ipsum" default:"true"`
+	Random              bool   `json:"random" default:"true"`
 }
 
 func NewClient(apiKey string) LoremIpsumClient {
@@ -32,21 +32,21 @@ func NewClient(apiKey string) LoremIpsumClient {
 	}
 }
 
-func (c *LoremIpsumClient) GetLoremIpsumText(query Params) ([]Response, error) {
+func (c *LoremIpsumClient) GetLoremIpsumText(query LoremIpsumProps) (Response, error) {
 	queryString, err := utils.MakeQueryString(query)
 	if err != nil {
-		return []Response{}, err
+		return Response{}, err
 	}
 	url := endpoint + "?" + queryString
 
 	resp, err := utils.MakeRequest("GET", url, c.ApiKey, nil)
 	if err != nil {
-		return []Response{}, err
+		return Response{}, err
 	}
 
-	var response []Response
+	var response Response
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		return []Response{}, fmt.Errorf("error decoding api response: %v", err)
+		return Response{}, fmt.Errorf("error decoding api response: %v", err)
 	}
 	resp.Body.Close()
 	return response, nil
